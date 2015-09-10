@@ -6,15 +6,15 @@ A (**very alpha state**) Web Password Manager Application using nw.js, angular.j
 ![Master Screen](/../screenshots/screenshots/01.png?raw=true "Master Screen")
 
 ## How to install
-Install `http-server`
+Install `http-server`:
 
 `npm install http-server -g`
 
-Install `bower` if you don't have it already.
+Install `bower` if you don't have it already:
 
 `npm install bower -g`
 
-Install `bower` packages
+Install `bower` packages:
 
 `bower install`
 
