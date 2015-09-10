@@ -1,5 +1,5 @@
 # jsPassword
-Web Password Manager Application
+A (**very alpha state**) Web Password Manager Application using nw.js, angular.js and material-design-lite.
 
 ## How to install
 Install `http-server`
