@@ -1,3 +1,4 @@
 .*
 *.codekit
 !/.gitignore
+bower_components/
