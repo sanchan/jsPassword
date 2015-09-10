@@ -1,0 +1,7 @@
+{
+  "Name" : "jsPassword",
+  "main" : "index.html",
+  "window" : {
+    "toolbar" : false
+  }
+}

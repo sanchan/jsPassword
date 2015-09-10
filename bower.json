@@ -1,0 +1,7 @@
+{
+  "name": "jsPassword",
+  "version": "0.0.1",
+  "dependencies": {
+      "storedb": ">=0.1.2"
+  }
+}

@@ -1,0 +1,1 @@
+angular.module("jsPassword").controller("AppController",["$rootScope","$scope","EntriesCollection","$location","$stateParams",function(o,n,t,e,r){n.addNewEntry=function(){e.path("/entry/new")}}]);

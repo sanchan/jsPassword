@@ -1,0 +1,38 @@
+<div class="actions">
+  <a ng-click="save()" id="entry-button-show" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+    Save
+  </a>
+
+  <a ng-click="cancel()" id="entry-button-cancel" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+    Cancel
+  </a>
+</div>
+
+<form>
+<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+  <tbody>
+    <tr ng-repeat="(key, val) in entry">
+      <td>{{key}}</td>
+      <td>
+        <div ng-if="(val.type == 'string') || (val.type == 'password')" class="mdl-textfield mdl-js-textfield">
+          <input class="mdl-textfield__input" type="text" value="{{val.value}}" ng-model="val.value" />
+          <label class="mdl-textfield__label">{{key}}</label>
+        </div>
+
+        <div ng-if="val.type == 'text'" class="mdl-textfield mdl-js-textfield">
+          <textarea class="mdl-textfield__input" type="text" rows="5" ng-model="val.value">{{val.value}}</textarea>
+        </div>
+
+        <label ng-if="val.type == 'boolean'" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+          <input type="checkbox" class="mdl-switch__input" checked="{{val.value}}" ng-model="val.value" />
+        </label>
+
+      </td>
+    </tr>
+  </tbody>
+</table>
+</form>
+
+<button ng-click="addNewEntry()" id="add-new-entry-button" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+  <i class="material-icons">add</i>
+</button>

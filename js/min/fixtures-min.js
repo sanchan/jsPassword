@@ -1,0 +1,1 @@
+angular.module("jsPassword").service("Fixtures",["EntriesCollection",function(e){this.init=function(){console.log("Fixtures: "+storedb("EntriesCollection").length)}}]);

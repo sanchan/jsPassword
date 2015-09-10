@@ -1,0 +1,1 @@
+angular.module("jsPassword").controller("LockScreenController",["$timeout","$scope","$location","EntriesCollection",function(r,o,e,s){o.keypressed=function(r){13===r.which?null==o.masterPassword||0==o.masterPassword.length?o.masterPasswordError=!0:(o.open=!0,s.size()>0?e.path("/entry/"+s.at(0).id+"/show"):e.path("/entry/empty")):o.masterPasswordError=!1}}]);

@@ -1,0 +1,1 @@
+angular.module("jsPassword").controller("MainColumn",["$scope","EntriesCollection",function(o,n){o.showAllEntries=function(){n.showAllEntries()},o.showFavoriteEntries=function(){n.showFavoriteEntries()}}]);

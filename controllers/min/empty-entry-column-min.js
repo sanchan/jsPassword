@@ -1,0 +1,1 @@
+angular.module("jsPassword").controller("EmptyEntryColumn",["$scope","$location",function(o,n){}]);
