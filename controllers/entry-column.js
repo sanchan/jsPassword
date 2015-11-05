@@ -2,7 +2,7 @@ angular.module('jsPassword')
 .controller('EntryColumn', ['$rootScope', '$scope', 'EntriesCollection', '$location', '$stateParams', '$state', function($rootScope, $scope, EntriesCollection, $location, $stateParams, $state) {
   // Update every Material Design component from the DOM.
   setTimeout(componentHandler.upgradeDom, 1);
-  
+
   $scope.entryId = $stateParams.entryId;
 
   $scope.validate = function() {
@@ -15,11 +15,9 @@ angular.module('jsPassword')
   };
 
   $scope.save = function() {
-    // console.log($scope.entryId);
     if ($scope.validate()) {
       // If $state.current.data.new == true, then we are creating a new entry
       if($state.current.data && $state.current.data.new) {
-        console.log($scope.entry);
         // EntriesCollection.new({id: parseInt($scope.entryId), data: $scope.entry});
         $scope.entryId = EntriesCollection.nextId();
         EntriesCollection.new({id: $scope.entryId, data: $scope.entry});
@@ -35,7 +33,7 @@ angular.module('jsPassword')
   $scope.destroy = function() {
     EntriesCollection.destroy($scope.entryId);
     var firstEntry = storedb('EntriesCollection').find();
-    console.log(firstEntry);
+
     if(firstEntry.length) {
       $location.path('/entry/' + firstEntry[0].id + '/show');
     } else {
