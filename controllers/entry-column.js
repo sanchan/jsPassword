@@ -3,7 +3,10 @@ angular.module('jsPassword')
   $scope.entryId = $stateParams.entryId;
 
   $scope.validate = function() {
-    // Dummy right now... everything is fine
+    // Name is mandatory
+    if(!$scope.entry.Name.value.trim().length) {
+      return false;
+    }
     return true;
   };
 
