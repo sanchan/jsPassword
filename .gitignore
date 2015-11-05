@@ -2,3 +2,4 @@
 *.codekit
 !/.gitignore
 bower_components/
+*/min/
