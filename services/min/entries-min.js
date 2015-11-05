@@ -1,1 +1,0 @@
-angular.module("jsPassword").service("entriesCollection",function(){this.entries=[{id:0,Name:"Entry 1",password:"123456"},{id:1,Name:"Entry 2",password:"123456"},{id:2,Name:"Entry 3",password:"123456"}]});
