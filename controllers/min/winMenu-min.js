@@ -1,1 +1,0 @@
-angular.module("jsPassword").controller("SearchBar",["$scope",function(o){}]);

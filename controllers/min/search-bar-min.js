@@ -1,1 +1,0 @@
-angular.module("jsPassword").controller("SearchBar",["$scope","$rootScope",function(a,o){a.filter=function(){o.$broadcast("searchValue",a.searchValue)}}]);
