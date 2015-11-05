@@ -22,5 +22,13 @@ app.config(["$stateProvider", function($stateProvider){
       url: "/entry/:entryId/edit",
       templateUrl: 'templates/entry-column-edit.html',
       controller: 'EntryColumn'
+    })
+    .state('reset', {
+      url: "/reset",
+      controller: ['$location', 'EntriesCollection', function($location, EntriesCollection){
+        // This just reset the DB with fixture data.
+        EntriesCollection.reset();
+        $location.path('/entry/0/show');
+      }]
     });
 }]);

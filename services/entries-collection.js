@@ -1,78 +1,113 @@
 angular.module('jsPassword')
-.service('EntriesCollection', ['$rootScope', 'DB', function($rootScope, DB) {
+.service('EntriesCollection', ['$rootScope', 'Fixtures', function($rootScope, Fixtures) {
   var self = this;
 
-  this.prepareEntries = function() {
-    this.masterAllEntries = DB.init();
-
-    this.allEntries = _.groupBy(this.masterAllEntries, function(entry){
-      return entry.data.Name.value.charAt(0).toLowerCase();
-    });
-
-    this.entries = _.clone( this.allEntries );
-  };
-
   this.size = function() {
-    return _.size(this.masterAllEntries);
+    return storedb('EntriesCollection').find().length;
   };
 
   this.at = function(position) {
-    return this.masterAllEntries[position];
+    return storedb('EntriesCollection').find()[position];
   };
 
-  this.showAllEntries = function() {
-    this.entries = _.clone( this.allEntries );
-    $rootScope.$broadcast('EntriesCollection::changed');
+  this.getAllEntriesGrouped = function() {
+    return _.groupBy(storedb('EntriesCollection').find(), function(entry){
+      return entry.data.Name.value.charAt(0).toLowerCase();
+    });
   };
 
   /** Shows only the favorite entries **/
-  this.showFavoriteEntries = function() {
-    var entries = _.clone( this.allEntries );
+  this.getFavoriteEntriesGrouped = function() {
+    var entries = _.groupBy(storedb('EntriesCollection').find(), function(entry){
+      return entry.data.Name.value.charAt(0).toLowerCase();
+    });
 
-    var newEntries = {};
+    var favEntries = {};
     _.each(entries, function(entries, letter){
       _.each(entries, function(entry){
         if(entry.data.Favorite.value){
-          if( !_.has(newEntries, letter) ) {
-            newEntries[letter] = [];
+          if( !_.has(favEntries, letter) ) {
+            favEntries[letter] = [];
           }
-          newEntries[letter].push( entry );
+          favEntries[letter].push( entry );
         }
       });
     });
 
-    this.entries = newEntries;
-    $rootScope.$broadcast('EntriesCollection::changed');
-  };
-
-  this.new = function(data) {
-    var newEntry = DB.new(data);
-    this.masterAllEntries.push(newEntry);
-
-    this.allEntries = _.groupBy(this.masterAllEntries, function(entry){
-      return entry.data.Name.value.charAt(0).toLowerCase();
-    });
-
-    this.entries = _.clone( this.allEntries );
-
-    return newEntry;
-  };
-
-  this.destroy = function(id) {
-    DB.destroy(id);
-  };
-
-  this.prepareNew = function() {
-    return DB.prepareNew();
+    return favEntries;
   };
 
   this.nextId = function() {
-    return DB.nextId();
+    var newEntryId = 0;
+    if(storedb('EntriesCollection').find().length) {
+      var lastEntryId = _.last(storedb('EntriesCollection').find()).id;
+      if(typeof lastEntryId === "number") {
+        newEntryId = lastEntryId + 1;
+      }
+    }
+
+    return newEntryId;
+  };
+
+  this.prepareNew = function() {
+    var newEntryId = 0;
+    if(storedb('EntriesCollection').find().length) {
+      var lastEntryId = _.last(storedb('EntriesCollection').find()).id;
+      if(typeof lastEntryId === "number") {
+        newEntryId = lastEntryId + 1;
+      }
+    }
+
+    return {
+      "id": newEntryId,
+      "data": {
+        "Name": {
+          "value": "",
+          "type": "string"
+        },
+        "Password": {
+          "value": "",
+          "type": "password"
+        },
+        "Favorite": {
+          "value": false,
+          "type": "boolean"
+        },
+        "Website": {
+          "value": "",
+          "type": "string"
+        },
+        "Note": {
+          "value": "",
+          "type": "text"
+        }
+      }
+    };
+  };
+
+  this.new = function(data) {
+    storedb('EntriesCollection').insert(data);
+
+    $rootScope.$broadcast('EntriesCollection::changed');
+  };
+
+  this.update = function(id, data) {
+    storedb('EntriesCollection').update({"id": parseInt(id)}, {"$set": {"data": data}});
+
+    $rootScope.$broadcast('EntriesCollection::changed');
+  };
+
+  this.destroy = function(id) {
+    storedb('EntriesCollection').remove({"id": parseInt(id)});
+
+    $rootScope.$broadcast('EntriesCollection::changed');
   };
 
   this.find = function(id) {
     var ret = {};
-    _.each(this.entries, function(entries, letter){
+    var entries = this.getAllEntriesGrouped();
+
+    _.each(entries, function(entries, letter){
       _.each(entries, function(entry){
         if(entry.id == id){
           return ret = entry;
@@ -84,29 +119,12 @@ angular.module('jsPassword')
     return ret.data;
   };
 
-  this.update = function(id, data) {
-    DB.update(id, data);
-
-    _.find(this.masterAllEntries, function(entry){
-      if(entry.id == id) {
-        entry.data = data;
-        return true;
-      }
-
-      return false;
+  this.reset = function() {
+    storedb('EntriesCollection').remove();
+    _.each(Fixtures.EntriesCollection, function(entry){
+      storedb('EntriesCollection').insert(entry);
     });
-
-    this.allEntries = _.groupBy(this.masterAllEntries, function(entry){
-      return entry.data.Name.value.charAt(0).toLowerCase();
-    });
-
-    this.entries = _.clone( this.allEntries );
   };
 
   /** Init **/
-  this.prepareEntries();
-
-  $rootScope.$on('EntriesCollection::changed', function(){
-    self.prepareEntries();
-  });
 }]);

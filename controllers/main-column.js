@@ -1,10 +1,10 @@
 angular.module("jsPassword")
-.controller('MainColumn', ['$scope', 'EntriesCollection', function($scope, EntriesCollection) {
+.controller('MainColumn', ['$rootScope', '$scope', 'EntriesCollection', function($rootScope, $scope, EntriesCollection) {
   $scope.showAllEntries = function() {
-    EntriesCollection.showAllEntries();
+    $rootScope.$broadcast("ShowAllEntries");
   };
 
   $scope.showFavoriteEntries = function() {
-    EntriesCollection.showFavoriteEntries();
+    $rootScope.$broadcast("ShowFavoriteEntries");
   };
 }]);
