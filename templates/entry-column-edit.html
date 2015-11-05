@@ -1,10 +1,14 @@
 <div class="actions">
+  <a ng-if="!isNew" ng-click="destroy()" id="entry-button-delete" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+    <i class="material-icons">delete</i>
+  </a>
+
   <a ng-click="save()" id="entry-button-show" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-    Save
+    <i class="material-icons">done</i>
   </a>
 
   <a ng-click="cancel()" id="entry-button-cancel" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
-    Cancel
+    <i class="material-icons">close</i>
   </a>
 </div>
 

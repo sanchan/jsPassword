@@ -1,19 +1,18 @@
 angular.module('jsPassword')
-.controller('SecondaryColumn', ['$scope', '$rootScope', '$location', 'EntriesCollection', function($scope, $rootScope, $location, EntriesCollection) {
+.controller('SecondaryColumn', ['$rootScope', '$scope', '$location', 'EntriesCollection', function($rootScope, $scope, $location, EntriesCollection) {
   $scope.entries = EntriesCollection.entries;
 
-  // When the user clicks on an entry, then the 'EntrySelected' message is broadcasted.
   $scope.selectEntry = function(id) {
-    // $rootScope.$broadcast("EntrySelected", id);
     $location.path("/entry/" + id + '/show');
-  }
+};
 
   // This message is broadcasted from the SearchBar Controller when a new search is submited.
   $scope.$on('searchValue', function(event, searchValue){
     var newEntries = {};
     _.each(EntriesCollection.entries, function(entries, letter){
       _.each(entries, function(entry){
-        if(entry.data.Name.trim().toLowerCase().indexOf(searchValue.toLowerCase()) != -1){
+        console.log(entry);
+        if(entry.data.Name.value.trim().toLowerCase().indexOf(searchValue.toLowerCase()) != -1){
           if( !_.has(newEntries, letter) ) {
             newEntries[letter] = [];
           }
@@ -25,6 +24,8 @@ angular.module('jsPassword')
   });
 
   $scope.$on('EntriesCollection::changed', function(){
+    console.log("on EntriesCollection::changed");
+    console.log(EntriesCollection.entries);
     $scope.entries = EntriesCollection.entries;
   });
 

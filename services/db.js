@@ -1,10 +1,10 @@
 angular.module('jsPassword')
-.service('DB', [function() {
+.service('DB', ['$rootScope', function($rootScope) {
   this.init = function() {
     // Check if we didn't create the fixtures yet
     // storedb('EntriesCollection').remove();
     if(!storedb('EntriesCollection').find()) {
-      var entries = [{
+      var default_entries = [{
         "id": 0,
         "data": {
           "Name": {
@@ -80,14 +80,18 @@ angular.module('jsPassword')
         }
       }];
 
-      _.each(entries, function(entry){
+      _.each(default_entries, function(entry){
         storedb('EntriesCollection').insert(entry);
       });
 
     }
 
     var entries = storedb('EntriesCollection').find();
-    delete entries['_id'];
+    delete entries._id;
+
+    _.each(entries, function(entry){
+      console.log(entry.id);
+    });
 
     return entries;
   };
@@ -95,15 +99,20 @@ angular.module('jsPassword')
   /** Creates a new entry and returns it **/
   this.new = function(data) {
     storedb('EntriesCollection').insert(data);
+    $rootScope.$broadcast('EntriesCollection::changed');
 
     return _.last(storedb('EntriesCollection').find());
   };
 
   this.prepareNew = function() {
+    console.log("prepareNew");
+
     var newEntryId = 0;
-    var lastEntryId = _.last(storedb('EntriesCollection').find())['id'];
-    if(lastEntryId) {
-      newEntryId = lastEntryId + 1;
+    if(storedb('EntriesCollection').find().length) {
+      var lastEntryId = _.last(storedb('EntriesCollection').find()).id;
+      if(typeof lastEntryId === "number") {
+        newEntryId = lastEntryId + 1;
+      }
     }
 
     return {
@@ -130,10 +139,28 @@ angular.module('jsPassword')
           "type": "text"
         }
       }
+    };
+  };
+
+  this.nextId = function() {
+    var newEntryId = 0;
+    if(storedb('EntriesCollection').find().length) {
+      var lastEntryId = _.last(storedb('EntriesCollection').find()).id;
+      if(typeof lastEntryId === "number") {
+        newEntryId = lastEntryId + 1;
+      }
     }
+
+    return newEntryId;
   };
 
   this.update = function(id, data) {
     storedb('EntriesCollection').update({"id": parseInt(id)}, {"$set": {"data": data}});
+    $rootScope.$broadcast('EntriesCollection::changed');
+  };
+
+  this.destroy = function(id) {
+    storedb('EntriesCollection').remove({"id": parseInt(id)});
+    $rootScope.$broadcast('EntriesCollection::changed');
   };
 }]);

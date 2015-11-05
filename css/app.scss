@@ -1,3 +1,6 @@
+$main-nav-width: 200px;
+$secondary-column-width: 240px;
+
 /* Font rendering improvement */
 body, html {
   font-family: 'Source Sans Pro', sans-serif;
@@ -11,7 +14,11 @@ body, html {
   -webkit-font-smoothing: antialiased;
 }
 
-$left-nav-width: 200px;
+input {
+  &[type="checkbox"] {
+    opacity: 0;
+  }
+}
 
 /* Fixes the bottom line when it's focused */
 .mdl-textfield {
@@ -147,7 +154,7 @@ $left-nav-width: 200px;
   padding: 16px 0;
   position: absolute;
   top: 64px;
-  width: $left-nav-width;
+  width: $main-nav-width;
   z-index: -1;
 
   .mdl-layout-title {
@@ -179,13 +186,11 @@ $left-nav-width: 200px;
 .mdl-layout__content {
   background: #FAFAFA;
   bottom: 0;
-  left: $left-nav-width;
+  left: $main-nav-width;
   position: absolute;
   right: 0;
   top: 64px;
   z-index: -2;
-
-  $secondary-column-width: 240px;
 
   #secondary-column {
     border-right: 1px solid #E0E0E0;
@@ -223,6 +228,7 @@ $left-nav-width: 200px;
 
     .actions {
       position: absolute;
+      left: 0;
       top: 15px;
       right: 15px;
 
@@ -230,7 +236,13 @@ $left-nav-width: 200px;
         float: right;
         margin-left: 15px;
       }
+
+
+      #entry-button-delete {
+        float: left;
+      }
     }
+
 
     .mdl-data-table {
       margin-top: 51px;

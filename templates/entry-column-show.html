@@ -1,6 +1,6 @@
 <div class="actions">
   <a ng-href="#/entry/{{entryId}}/edit" id="entry-button-edit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-    Edit
+    <i class="material-icons">mode_edit</i>
   </a>
 </div>
 
@@ -11,7 +11,7 @@
 
       <td ng-if="val.type == 'boolean'">
         <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
-          <input type="checkbox" class="mdl-switch__input" checked="{{val.value}}" disabled="true" />
+          <input type="checkbox" class="mdl-switch__input" ng-model="val.value" disabled="true" />
         </label>
       </td>
 

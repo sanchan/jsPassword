@@ -1,12 +1,16 @@
 angular.module('jsPassword')
 .service('EntriesCollection', ['$rootScope', 'DB', function($rootScope, DB) {
-  this.masterAllEntries = DB.init();
+  var self = this;
 
-  this.allEntries = _.groupBy(this.masterAllEntries, function(entry){
-    return entry.data.Name.value.charAt(0).toLowerCase();
-  });
+  this.prepareEntries = function() {
+    this.masterAllEntries = DB.init();
 
-  this.entries = _.clone( this.allEntries );
+    this.allEntries = _.groupBy(this.masterAllEntries, function(entry){
+      return entry.data.Name.value.charAt(0).toLowerCase();
+    });
+
+    this.entries = _.clone( this.allEntries );
+  };
 
   this.size = function() {
     return _.size(this.masterAllEntries);
@@ -54,8 +58,16 @@ angular.module('jsPassword')
     return newEntry;
   };
 
+  this.destroy = function(id) {
+    DB.destroy(id);
+  };
+
   this.prepareNew = function() {
     return DB.prepareNew();
+  };
+
+  this.nextId = function() {
+    return DB.nextId();
   };
 
   this.find = function(id) {
@@ -90,4 +102,11 @@ angular.module('jsPassword')
 
     this.entries = _.clone( this.allEntries );
   };
+
+  /** Init **/
+  this.prepareEntries();
+
+  $rootScope.$on('EntriesCollection::changed', function(){
+    self.prepareEntries();
+  });
 }]);
